@@ -1,26 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Fatemeh
- * Date: 6/19/2020
- * Time: 10:02 PM
- */
+declare(strict_types=1);
 
 namespace App\Controller;
 
 
+use App\Service\MarsTimezoneConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiController extends AbstractController
 {
 
-    public function index(): Response
+    public function index(MarsTimezoneConverter $timezoneConverter): JsonResponse
     {
-        $number = random_int(0, 100);
-
-        return new Response(
-            '<html><body>Lucky number: '.$number.'</body></html>'
+        return new JsonResponse(
+            [
+                "MSD" => $timezoneConverter->getSolarDate(),
+                "MTC" => $timezoneConverter->getCoordinatedTime()
+            ],
+            JsonResponse::HTTP_OK
         );
     }
 }
