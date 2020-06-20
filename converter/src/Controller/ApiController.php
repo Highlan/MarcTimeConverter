@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ApiController extends AbstractController
 {
 
-    public function index(MarsTimezoneConverter $timezoneConverter): JsonResponse
+    public function getTime(MarsTimezoneConverter $timezoneConverter): JsonResponse
     {
         return new JsonResponse(
             [
