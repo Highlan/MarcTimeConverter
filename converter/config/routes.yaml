@@ -1,3 +1,10 @@
 index:
-    path: /
+    path:       /{utc}
     controller: App\Controller\ApiController::index
+    methods:    GET
+    defaults:
+        {
+            utc: now
+            _format: json
+        }
+
