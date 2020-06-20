@@ -6,13 +6,29 @@ namespace App\Service;
 
 class MarsTimezoneConverter
 {
+    const CURRENT_LEAP_SECOND = 37;
+    const SECONDS_PER_SOL = 88775.244147;
+    const SECONDS_PER_DAY = 86400;
+    const MSD_PRECISION = 5;
+
+
+    private $_timestamp = null;
+    private $_MSD = null;
+
+    public function __construct(int $timestamp)
+    {
+        $this->_timestamp = $timestamp;
+        $this->_MSD = ($this->_timestamp + self::CURRENT_LEAP_SECOND) / self::SECONDS_PER_SOL + 34127.2954262;
+    }
+
     public function getSolarDate(): float
     {
-        return 17825.67217;
+        return $this->_MSD;
     }
 
     public function getCoordinatedTime(): string
     {
-        return '16:48:54';
+        $MTC = round(fmod($this->_MSD * self::SECONDS_PER_DAY, self::SECONDS_PER_DAY), 5);
+        return gmdate('H:i:s', $MTC);
     }
 }
