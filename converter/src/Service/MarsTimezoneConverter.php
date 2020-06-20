@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace App\Service;
 
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
+
 class MarsTimezoneConverter
 {
     const CURRENT_LEAP_SECOND = 37;
@@ -15,9 +18,14 @@ class MarsTimezoneConverter
     private $_timestamp = null;
     private $_MSD = null;
 
-    public function __construct(int $timestamp)
+    public function __construct(RequestStack $request)
     {
-        $this->_timestamp = $timestamp;
+        $utc = $request->getCurrentRequest()->get('utc') ?? 'now';
+        try{
+            $this->_timestamp = (new \DateTime($utc))->getTimestamp();
+        }catch (\Exception $exception){
+            return new JsonResponse(['message'=>'Invalid UTC'],JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
         $this->_MSD = ($this->_timestamp + self::CURRENT_LEAP_SECOND) / self::SECONDS_PER_SOL + 34127.2954262;
     }
 
@@ -28,7 +36,7 @@ class MarsTimezoneConverter
 
     public function getCoordinatedTime(): string
     {
-        $MTC = round(fmod($this->_MSD * self::SECONDS_PER_DAY, self::SECONDS_PER_DAY), 5);
+        $MTC = (int)fmod($this->_MSD * self::SECONDS_PER_DAY, self::SECONDS_PER_DAY);
         return gmdate('H:i:s', $MTC);
     }
 }
