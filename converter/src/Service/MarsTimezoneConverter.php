@@ -20,7 +20,7 @@ class MarsTimezoneConverter
 
     public function __construct(RequestStack $request)
     {
-        $utc = rawurlencode($request->getCurrentRequest()->get('utc'));// ?? 'now';
+        $utc = rawurldecode($request->getCurrentRequest()->get('utc'));// ?? 'now';
         try{
             $this->_timestamp = (new \DateTime($utc))->getTimestamp();
         }catch (\Exception $exception){
