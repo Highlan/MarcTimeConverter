@@ -24,7 +24,10 @@ class MarsTimezoneConverter
         try{
             $this->_timestamp = (new \DateTime($utc))->getTimestamp();
         }catch (\Exception $exception){
-            throw new InvalidInputException('Invalid UTC!', JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            throw new InvalidInputException(
+                'Invalid UTC!',
+                JsonResponse::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
         $this->_MSD = ($this->_timestamp + self::CURRENT_LEAP_SECOND) / self::SECONDS_PER_SOL + 34127.2954262;
     }
