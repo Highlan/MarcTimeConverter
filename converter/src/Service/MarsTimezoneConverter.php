@@ -29,9 +29,9 @@ class MarsTimezoneConverter
         $this->_MSD = ($this->_timestamp + self::CURRENT_LEAP_SECOND) / self::SECONDS_PER_SOL + 34127.2954262;
     }
 
-    public function getSolarDate(): float
+    public function getSolarDate(): int
     {
-        return $this->_MSD;
+        return (int)$this->_MSD;
     }
 
     public function getCoordinatedTime(): string
