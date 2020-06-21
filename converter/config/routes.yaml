@@ -1,6 +1,6 @@
 index:
     path:       /{utc}
-    controller: App\Controller\ApiController::index
+    controller: App\Controller\ApiController::getTime
     methods:    GET
     defaults:
         {
