@@ -2,6 +2,8 @@ index:
     path:       /{utc}
     controller: App\Controller\ApiController::getTime
     methods:    GET
+    requirements:
+        utc: .+
     defaults:
         {
             utc: now
